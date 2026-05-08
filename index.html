@@ -31,17 +31,28 @@ body{
 }
 
 .card{
-  width:100%;
+  width:calc(100% - 32px);
   max-width:420px;
   background:rgba(255,255,255,.72);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+
   border-radius:20px;
-  padding:32px;
+  padding:28px 24px;
   text-align:center;
   box-shadow:0 15px 40px rgba(0,0,0,.25);
-  position:relative;
-  z-index:10; /* ✅ 클릭 안 막히게 */
+
+  position:fixed;
+  left:50%;
+  bottom:calc(20px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:10;
+}
+
+/* Yes 버튼 누른 뒤 최상단으로 이동 */
+.card.is-top{
+  top:calc(20px + env(safe-area-inset-top));
+  bottom:auto;
 }
 
 h1{
@@ -112,6 +123,20 @@ h1{
     opacity:0;
   }
 }
+
+@media (max-width: 768px) {
+  .card{
+    width:calc(100% - 28px);
+    max-width:360px;
+    padding:20px 18px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .card.is-top{
+    top:calc(16px + env(safe-area-inset-top));
+    bottom:auto;
+  }
+}  
 </style>
 </head>
 
@@ -144,6 +169,7 @@ h1{
   yesBtn.addEventListener("click", () => {
     document.body.style.backgroundImage =
       'linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url("02.jpg")';
+      document.querySelector(".card").classList.add("is-top");
     if (result) result.style.display = "block";
     createHearts();
   });
